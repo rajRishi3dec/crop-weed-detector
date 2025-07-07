@@ -2,16 +2,103 @@
 <html>
 <head>
     <title>Weed Detector 🌿</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #e8f5e9, #c8e6c9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px;
+        }
+
+        h2 {
+            color: #2e7d32;
+        }
+
+        form {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        input[type="file"] {
+            margin: 15px 0;
+        }
+
+        button {
+            background-color: #388e3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2e7d32;
+        }
+
+        #preview {
+            margin-top: 20px;
+            max-width: 300px;
+            display: none;
+            border: 2px dashed #388e3c;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f1f8e9;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #1b5e20;
+        }
+    </style>
 </head>
 <body>
-    <h2>Upload an image to detect</h2>
+
+    <h2>🌿 Upload an Image to Detect Weeds or Crops</h2>
+
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" required>
-        <button type="submit">Detect</button>
+        <input type="file" name="image" id="imageInput" accept="image/*" required>
+        <br>
+        <button type="submit">🚀 Detect</button>
     </form>
 
+    <div id="preview">
+        <p><strong>Preview:</strong></p>
+        <img id="imgPreview" src="#" alt="Image Preview" style="max-width:100%;"/>
+    </div>
+
     {% if result %}
-        <h3>Result: <b>{{ result }}</b></h3>
+        <div id="result">
+            <h3>🧠 Detection Result:</h3>
+            <b>{{ result }}</b>
+        </div>
     {% endif %}
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const preview = document.getElementById('preview');
+        const imgPreview = document.getElementById('imgPreview');
+
+        imageInput.onchange = event => {
+            const [file] = imageInput.files;
+            if (file) {
+                preview.style.display = 'block';
+                imgPreview.src = URL.createObjectURL(file);
+            } else {
+                preview.style.display = 'none';
+                imgPreview.src = '';
+            }
+        };
+    </script>
+
 </body>
 </html>
+
