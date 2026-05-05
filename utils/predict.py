@@ -3,8 +3,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from config import MODEL_PATH, IMAGE_SIZE
 
-# Load model once
-model = load_model(MODEL_PATH)
+model = load_model(MODEL_PATH, compile=False)
 
 def predict_image(img_path):
     img = image.load_img(img_path, target_size=IMAGE_SIZE)
@@ -16,4 +15,4 @@ def predict_image(img_path):
     label = "🌿 Weed" if prediction > 0.5 else "🌱 Crop"
     confidence = prediction if prediction > 0.5 else 1 - prediction
 
-    return label, round(confidence * 100, 2)
+    return f"{label} ({confidence*100:.2f}%)"

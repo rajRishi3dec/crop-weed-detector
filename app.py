@@ -34,7 +34,7 @@ def index():
             result = predict_image(filepath)
 
             # Send image to frontend
-            image_path = filepath
+            image_path = "/" + filepath
 
     return render_template("index.html", result=result, image_path=image_path)
 
