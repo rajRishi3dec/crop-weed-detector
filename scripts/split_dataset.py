@@ -23,8 +23,8 @@ def split_data(all_path, train_path, val_path, test_size=0.2):
     print(f"✅ Split {len(images)} images from {all_path} -> Train: {len(train_images)}, Val: {len(val_images)}")
 
 # Define paths
-all_crops_path = "all/crop"
-all_weeds_path = "all/weed"
+all_crops_path = "raw_data/crop"
+all_weeds_path = "raw_data/weed"
 train_crops_path = "dataset/train/crop"
 train_weeds_path = "dataset/train/weed"
 val_crops_path = "dataset/val/crop"

@@ -76,11 +76,14 @@
     </div>
 
     {% if result %}
-        <div id="result">
-            <h3>🧠 Detection Result:</h3>
-            <b>{{ result }}</b>
-        </div>
-    {% endif %}
+<div id="result">
+    <h3>🧠 Detection Result:</h3>
+    <p><b>{{ result[0] }}</b></p>
+    <p>Confidence: <b>{{ result[1] }}%</b></p>
+
+    <img src="{{ image_path }}" style="max-width:300px; margin-top:10px; border-radius:10px;">
+</div>
+{% endif %}
 
     <script>
         const imageInput = document.getElementById('imageInput');
