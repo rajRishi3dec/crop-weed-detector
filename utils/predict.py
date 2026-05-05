@@ -3,7 +3,8 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from config import MODEL_PATH, IMAGE_SIZE
 
-model = load_model(MODEL_PATH, compile=False)
+model = load_model("model/weed_model.h5")
+model.save("model/weed_model_new.keras")
 
 def predict_image(img_path):
     img = image.load_img(img_path, target_size=IMAGE_SIZE)
