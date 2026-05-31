@@ -4,8 +4,8 @@ from config import UPLOAD_FOLDER
 import os
 import uuid
 #import webbrowser
-import threading 
-import time
+#import threading 
+#import time
 # Reduce TensorFlow logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -39,14 +39,11 @@ def index():
     return render_template("index.html", result=result, image_path=image_path)
 
 
-def open_browser():
-    time.sleep(1)  # wait for server to start
-    # webbrowser.open("http://127.0.0.1:5000")
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
 
     # Open browser in separate thread
-    threading.Thread(target=open_browser).start()
 
     app.run(host="0.0.0.0", port=port, debug=False)

@@ -1,107 +1,243 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weed Detector 🌿</title>
+    <!-- Importing a modern Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-hover: #1b5e20;
+            --bg-color: #e8f5e9;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #c8e6c9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(to right, #e8f5e9, #c8e6c9);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding: 50px;
+            padding: 20px;
+            color: var(--text-main);
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
         }
 
         h2 {
-            color: #2e7d32;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 24px;
         }
 
-        form {
-            background: white;
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            text-align: center;
+        p.subtitle {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 14px;
         }
 
+        /* Custom File Upload Styling */
+        .upload-area {
+            position: relative;
+            width: 100%;
+            border: 2px dashed var(--primary-color);
+            border-radius: 15px;
+            padding: 40px 20px;
+            background-color: #f1f8e9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .upload-area:hover {
+            background-color: #e8f5e9;
+            border-color: var(--primary-hover);
+        }
+
+        .upload-area i {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .upload-area span {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        /* Hide the default nasty file input */
         input[type="file"] {
-            margin: 15px 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            cursor: pointer;
         }
 
         button {
-            background-color: #388e3c;
+            background-color: var(--primary-color);
             color: white;
-            padding: 10px 20px;
+            width: 100%;
+            padding: 14px;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(46, 125, 50, 0.2);
         }
 
         button:hover {
-            background-color: #2e7d32;
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 125, 50, 0.3);
         }
 
-        #preview {
-            margin-top: 20px;
-            max-width: 300px;
+        /* Image Preview Area */
+        #preview-container {
             display: none;
-            border: 2px dashed #388e3c;
-            border-radius: 10px;
-            padding: 10px;
-            background-color: #f1f8e9;
+            margin-top: 25px;
+            animation: fadeIn 0.5s ease;
         }
 
-        #result {
-            margin-top: 20px;
+        #imgPreview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-height: 250px;
+            object-fit: cover;
+        }
+
+        /* Results Area */
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f1f8e9;
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .result-box h3 {
+            color: var(--primary-hover);
+            margin-bottom: 10px;
             font-size: 18px;
-            color: #1b5e20;
+        }
+
+        .result-box p {
+            margin: 5px 0;
+            font-size: 15px;
+        }
+
+        .confidence-badge {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .result-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <h2>🌿 Upload an Image to Detect Weeds or Crops</h2>
+    <div class="container">
+        <h2>🌿 Weed & Crop Detector</h2>
+        <p class="subtitle">Upload an image of your plant to analyze it.</p>
 
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" id="imageInput" accept="image/*" required>
-        <br>
-        <button type="submit">🚀 Detect</button>
-    </form>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="upload-area">
+                <i style="font-style: normal; font-size: 3rem;">📸</i>
+                <br>
+                <span id="upload-text">Drag & Drop or Click to Upload</span>
+                <input type="file" name="image" id="imageInput" accept="image/*" required>
+            </div>
+            
+            <button type="submit">🚀 Analyze Image</button>
+        </form>
 
-    <div id="preview">
-        <p><strong>Preview:</strong></p>
-        <img id="imgPreview" src="#" alt="Image Preview" style="max-width:100%;"/>
+        <div id="preview-container">
+            <p style="margin-bottom: 10px; font-weight: 500; font-size: 14px; color: var(--text-muted);">Preview:</p>
+            <img id="imgPreview" src="#" alt="Image Preview"/>
+        </div>
+
+        {% if result %}
+        <div class="result-box">
+            <h3>🧠 Detection Complete</h3>
+            <p>Classification: <b>{{ result[0] }}</b></p>
+            <p>Confidence: <span class="confidence-badge">{{ result[1] }}%</span></p>
+
+            {% if image_path %}
+            <img src="{{ image_path }}" class="result-img" alt="Analyzed Result">
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
-
-    {% if result %}
-<div id="result">
-    <h3>🧠 Detection Result:</h3>
-    <p><b>{{ result[0] }}</b></p>
-    <p>Confidence: <b>{{ result[1] }}%</b></p>
-
-    <img src="{{ image_path }}" style="max-width:300px; margin-top:10px; border-radius:10px;">
-</div>
-{% endif %}
 
     <script>
         const imageInput = document.getElementById('imageInput');
-        const preview = document.getElementById('preview');
+        const previewContainer = document.getElementById('preview-container');
         const imgPreview = document.getElementById('imgPreview');
+        const uploadText = document.getElementById('upload-text');
 
-        imageInput.onchange = event => {
+        imageInput.addEventListener('change', function(event) {
             const [file] = imageInput.files;
             if (file) {
-                preview.style.display = 'block';
+                // Update the text to show the filename
+                uploadText.textContent = file.name;
+                
+                // Show the preview
+                previewContainer.style.display = 'block';
                 imgPreview.src = URL.createObjectURL(file);
             } else {
-                preview.style.display = 'none';
+                uploadText.textContent = 'Drag & Drop or Click to Upload';
+                previewContainer.style.display = 'none';
                 imgPreview.src = '';
             }
-        };
+        });
     </script>
 
 </body>
 </html>
-
